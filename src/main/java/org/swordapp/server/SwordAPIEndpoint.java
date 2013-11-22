@@ -6,10 +6,10 @@ import org.apache.abdera.model.Element;
 import org.apache.abdera.model.Entry;
 import org.apache.abdera.parser.Parser;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.ParameterParser;
-import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.log4j.Logger;
@@ -254,8 +254,8 @@ public class SwordAPIEndpoint
 			throws ServletException, IOException, SwordError
 	{
 		// Parse the request for files (using the fileupload commons library)
-		List<DiskFileItem> items = this.getPartsFromRequest(req);
-		for (DiskFileItem item : items)
+		List<FileItem> items = this.getPartsFromRequest(req);
+		for (FileItem item : items)
 		{
 			// find out which part we are looking at
 			String contentDisposition = item.getHeaders().getHeader("Content-Disposition");
@@ -453,7 +453,7 @@ public class SwordAPIEndpoint
 		return parameters.get(key);
 	}
 
-	protected List<DiskFileItem> getPartsFromRequest(HttpServletRequest request)
+	protected List<FileItem> getPartsFromRequest(HttpServletRequest request)
 			throws ServletException
 	{
 		try
@@ -465,7 +465,7 @@ public class SwordAPIEndpoint
 			ServletFileUpload upload = new ServletFileUpload(factory);
 
 			// Parse the request
-			List<DiskFileItem> items = upload.parseRequest(request);
+			List<FileItem> items = upload.parseRequest(request);
 
 			return items;
 		}
