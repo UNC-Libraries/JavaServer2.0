@@ -116,9 +116,13 @@ public class MediaResourceAPI extends SwordAPIEndpoint
             {
                 OutputStream out = resp.getOutputStream();
                 InputStream in = resource.getInputStream();
-                this.copyInputToOutput(in, out);
-                out.flush();
-                in.close();
+                try {
+                    this.copyInputToOutput(in, out);
+                    out.flush();
+                } finally {
+                    if (in != null)
+                        in.close();
+                }
             }
         }
         catch (SwordError se)

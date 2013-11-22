@@ -84,7 +84,8 @@ public class AtomStatement extends Statement
 			entry.setSummary("Original Deposit");
 			entry.setUpdated(new Date());
 
-            entry.setContent(new IRI(deposit.getUri()), deposit.getMediaType());
+            if (deposit.getMediaType() != null)
+                entry.setContent(new IRI(deposit.getUri()), deposit.getMediaType());
             entry.addCategory(UriRegistry.SWORD_TERMS_NAMESPACE, UriRegistry.SWORD_ORIGINAL_DEPOSIT, "Original Deposit");
             if (deposit.getDepositedOn() != null)
             {
@@ -102,9 +103,11 @@ public class AtomStatement extends Statement
                 entry.addSimpleExtension(new QName(UriRegistry.SWORD_DEPOSITED_BY), deposit.getDepositedBy());
             }
 
-            for (String packaging : deposit.getPackaging())
-            {
-                entry.addSimpleExtension(UriRegistry.SWORD_PACKAGING, packaging);
+            if (deposit.getPackaging() != null) {
+                for (String packaging : deposit.getPackaging())
+                {
+                    entry.addSimpleExtension(UriRegistry.SWORD_PACKAGING, packaging);
+                }
             }
         }
 
